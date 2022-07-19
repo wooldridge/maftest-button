@@ -1,0 +1,32 @@
+.menus {
+    margin-right: 50px; 
+}
+.menu {
+    margin-left: 40px; 
+    white-space: nowrap;
+    a {
+        text-decoration: none;
+        color: #ddd;
+        &:hover {
+            color: #ddd;
+        }
+    }
+}
+
+.dropdown .nav-link {
+    color:#ddd; 
+    text-decoration: none;
+    &:hover, &.hover, &:active, &.active, &:focus, &.focus {
+        color:#ddd; 
+        text-decoration: none;
+    }
+}
+.dropdown .dropdown-item {
+    color:#333; 
+    text-decoration: none;
+    &:hover, &.hover, &:active, &.active, &:focus, &.focus {
+        color:#333; 
+        background-color: #eee;
+        text-decoration: none;
+    }
+}
