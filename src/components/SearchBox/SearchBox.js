@@ -13,8 +13,8 @@ const SearchBox = (props) => {
   // const searchContext = useContext(SearchContext);
 
   // const qtextInit: string = searchContext.qtext || "";
-  const qtextInit: string = "";
-  let selectedInit: string = "";
+  const qtextInit = "";
+  let selectedInit = "";
 
   let items = [];
   if (props.config && props.config.items && props.config.items.length > 0) {
@@ -23,8 +23,8 @@ const SearchBox = (props) => {
     selectedInit = found ? found.label : items[0].label;
   }
 
-  const [selected, setSelected] = useState<any>(selectedInit);
-  const [qtext, setQtext] = useState<any>(qtextInit);
+  const [selected, setSelected] = useState(selectedInit);
+  const [qtext, setQtext] = useState(qtextInit);
   const searchInputRef = React.createRef();
 
   // useEffect(() => {

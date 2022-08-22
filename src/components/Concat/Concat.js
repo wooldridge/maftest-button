@@ -41,9 +41,9 @@ const Concat = (props) => {
     })
     const concatVals = concatArray.join("");
 
-    let concatClassName: any = props.className ? props.className : props.config.className ? props.config.className : "concat";
-    let concatStyle: any = props.style ? props.style : props.config.style ? props.config.style : {};
-    let concatTitle: string = concatVals;
+    let concatClassName = props.className ? props.className : props.config.className ? props.config.className : "concat";
+    let concatStyle = props.style ? props.style : props.config.style ? props.config.style : {};
+    let concatTitle = concatVals;
 
     return (
         <span 

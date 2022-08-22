@@ -13,14 +13,14 @@ import _ from "lodash";
  * @prop {object} config.style  CSS style object applied to snippet content.
  */
 
-const ResultSnippet: React.ComponentType<Props> = (props) => {
+const ResultSnippet = (props) => {
   const {config, data} = props;
   const highlight = config.highlight ? config.highlight : "#FFFFB0";
   const weight = config.weight ? config.weight : "bold";
   const separator = config.separator ? config.separator : " ... ";
   // Force to array
   let matches = _.isArray(data.snippet.match) ? data.snippet.match : [data.snippet.match];
-  let processed: any[] = [];
+  let processed = [];
   matches.forEach((m, i1) => {
     let replaced = String(m["match-string"] ? m["match-string"] : "");
     if (m.highlight) {
