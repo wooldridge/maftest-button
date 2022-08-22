@@ -1,52 +1,42 @@
 import _ from "lodash";
-
-/**
- * Extract a value from a data object based on a dot-notation path.
- * @see https://lodash.com/docs/4.17.15#get 
- *
- * @function getValueByPath
- * @arg {object} data Data object from which to extract the value.
- * @arg {string} path  Path to the value to extract.
- * @arg {boolean} getFirst If true, return first element if value is an array. Optional (default is false).
- * @returns {any} Value at that path location or null if not found. 
- */
-export const getValByPath = (data, path, getFirst=false) => {
-    let val: any = _.get(data, path, null);
-    return _.isNil(val) ? null : 
-        ((Array.isArray(val) && getFirst) ? val[0] : val);
-};
+const {JSONPath} = require('jsonpath-plus');
+import { DateTime as dt } from "luxon";
  
 /**
- * Extract a value from a data object based on a dot-notation path and return as array.
- * @see https://lodash.com/docs/4.17.15#get 
+ * Extract a value from a data object based on a JSONPath expression.
+ * @see https://jsonpath-plus.github.io/JSONPath/docs/ts/
  *
- * @function getValByPathAsArray
- * @arg {object} data Data object from which to extract the value.
- * @arg {string} path  Path to the value to extract.
- * @returns {array} Value at that path location as an array or empty array if not found. 
+ * @function getValByPath
  */
- export const getValByPathAsArray = (data, path) => {
-    let val: any = _.get(data, path, []);
-    return (Array.isArray(val) ? val : [val]);
+ export const getValByPath = (data, expr, getFirst=false) => {
+    expr = _.isNil(expr) ? "" : expr;
+    let val = JSONPath({wrap: false, path: expr, json: data});
+    return ((Array.isArray(val) && getFirst) ? val[0] : val);
 };
 
- export const getValByConfig = (data, config, getFirst=false) => {
-    let val: any = null;
+/**
+ * Extract a value from a data object based on a configuration object of JSONPath expressions.
+ * @see https://jsonpath-plus.github.io/JSONPath/docs/ts/
+ *
+ * @function getValByConfig
+ */
+export const getValByConfig = (data, config, getFirst=false) => {
+    let val = null;
     // If path only, get value based on path
     if (config.path && !config.arrayPath) {
-        val = _.get(data, config.path, null);
+        val = getValByPath(data, config.path, getFirst);
     } 
     // If arrayPath only, get value based on arrayPath
     else if (!config.path && config.arrayPath) {
-        val = _.get(data, config.arrayPath, null);
+        val = getValByPath(data, config.arrayPath, getFirst);
     } 
     // If both, first get temp value based on arrayPath
     else if (config.path && config.arrayPath) {
-        let arrayData = _.get(data, config.arrayPath, []);
+        let arrayData = getValByPath(data, config.arrayPath, getFirst);
         arrayData = Array.isArray(arrayData) ? arrayData : [arrayData];
         // Then get final value(s) in temp value based on path
         val = arrayData.map(d => {
-            return _.get(d, config.path, null);
+            return getValByPath(d, config.path);
         })
     }
     // Return first element if array and getFirst is set
@@ -57,5 +47,15 @@ export const getValByPath = (data, path, getFirst=false) => {
     result = (!Array.isArray(val) && config.prepend) ? config.prepend + result : result;
     result = (!Array.isArray(val) && config.append) ? result + config.append : result;
 
+    return result;
+};
+
+export const getFormattedDateTime = (val, format=null, from=null) => {
+    const defaultFormat = "yyyy-MM-dd";
+    let result = val;
+    const fr = from ? from : "ISO";
+    if (!_.isNil(result)) {
+        result = dt["from" + fr](val).toFormat(format ? format : defaultFormat);
+    }
     return result;
 };
