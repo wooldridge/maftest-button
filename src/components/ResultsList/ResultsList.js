@@ -105,7 +105,7 @@ const ResultsList = (props) => {
                 <List data={results} config={configEntityType.items} />
                 : null}
             </div>
-            {configEntityType.categories ?
+            {/* configEntityType.categories ?
               <div className="categories">
                 {getCategories(results, configEntityType.categories).map((s, index2) => {
                   return (
@@ -115,10 +115,10 @@ const ResultsList = (props) => {
                     >{s}</Chiclet>
                   );
                 })}
-              </div> : null}
+              </div> : null */}
           </div>
           <div className="actions">
-            {configEntityType.timestamp ?
+            {/* configEntityType.timestamp ?
               <div className="timestamp">
                 <DateTime config={configEntityType.timestamp} data={results} style={configEntityType.timestamp.style} />
               </div> : null}
@@ -132,7 +132,7 @@ const ResultsList = (props) => {
                   COMPONENTS[configEntityType.resultActions.component],
                   {config: configEntityType.resultActions.config, data: results.extracted}, null
                 )
-                : null}
+                : null */}
             </div>
           </div>
         </div>
