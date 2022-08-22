@@ -53,7 +53,16 @@ const ResultsList = (props) => {
   // Handle both singular and array cases for categories
   const getCategories = (results, config) => {
     let res = getValByConfig(results, config);
-    return _.isArray(res) ? res : [res];
+    res = _.isArray(res) ? res : [res];
+    res = res.map((s, index2) => {
+      return (
+        <Chiclet
+          key={"category-" + index2}
+          config={config}
+        >{s}</Chiclet>
+      )
+    });
+    return res;
   }
 
   const getResults = () => {
@@ -89,7 +98,7 @@ const ResultsList = (props) => {
       }
       return (
         <div key={"result-" + index} className="result">
-          {<span className="entityIcon" data-testid={"entity-icon-" + index}><FontAwesomeIcon icon={iconElement} color={configEntityType.icon ? configEntityType.icon.color : defaultIcon.color} /></span>}
+          <span className="entityIcon" data-testid={"entity-icon-" + index}><FontAwesomeIcon icon={iconElement} color={configEntityType.icon ? configEntityType.icon.color : defaultIcon.color} /></span>
           <div className="thumbnail">
             {configEntityType.thumbnail ?
               <Image data={results} config={configEntityType.thumbnail.config} />
@@ -105,20 +114,13 @@ const ResultsList = (props) => {
                 <List data={results} config={configEntityType.items} />
                 : null}
             </div>
-            {/* configEntityType.categories ?
+            {configEntityType.categories ?
               <div className="categories">
-                {getCategories(results, configEntityType.categories).map((s, index2) => {
-                  return (
-                    <Chiclet
-                      key={"category-" + index2}
-                      config={configEntityType.categories}
-                    >{s}</Chiclet>
-                  );
-                })}
-              </div> : null */}
+                {getCategories(results, configEntityType.categories)}
+              </div> : null}
           </div>
           <div className="actions">
-            {/* configEntityType.timestamp ?
+            {configEntityType.timestamp ?
               <div className="timestamp">
                 <DateTime config={configEntityType.timestamp} data={results} style={configEntityType.timestamp.style} />
               </div> : null}
@@ -130,9 +132,10 @@ const ResultsList = (props) => {
               {configEntityType.resultActions.component ?
                 React.createElement(
                   COMPONENTS[configEntityType.resultActions.component],
-                  {config: configEntityType.resultActions.config, data: results.extracted}, null
+                  {config: configEntityType.resultActions.config, data: results}
+                  , null
                 )
-                : null */}
+                : null}
             </div>
           </div>
         </div>
@@ -145,7 +148,7 @@ const ResultsList = (props) => {
   // TODO removed Pagination below
   return (
     <div className="resultsList">
-      {(props.data.length) > 0 ? (
+      {_.isArray(props.data) && props.data.length > 0 ? (
         <div>
           {getResults()}
         </div>
