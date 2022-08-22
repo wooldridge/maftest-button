@@ -58,7 +58,7 @@ const ResultsList = (props) => {
 
   const getResults = () => {
     // let results = searchContext.searchResults.result.map((results, index) => {
-    let results = props.data.map((results, index) => {
+    let results = _.isArray(props.data) && props.data.map((results, index) => {
       // Get entity type via configured path (root relative if configured) or at default property "entityType"
       const entityType = props.config.entityType ? 
         (props.config.entityType.rootRelative ? getValByConfig(props.data, props.config.entityType) :
