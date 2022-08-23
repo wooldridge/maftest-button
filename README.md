@@ -11,7 +11,7 @@ npm install maftest-button
 ## Use
 
 ```
-import { Metrics } from "maftest-button";
+import { ResultsList, SearchBox } from "maftest-button";
 ```
 
 Configuration details here: https://wiki.marklogic.com/display/ENGINEERING/Entity+Viewer+UI+Configuration%2C+v1.0.0
