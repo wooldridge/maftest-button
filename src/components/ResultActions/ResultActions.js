@@ -59,7 +59,7 @@ const ResultActions = (props) => {
   }
 
   return (
-    <div>
+    <div style={{display: "inline-block"}}>
       {getActions()}
     </div>
   )
