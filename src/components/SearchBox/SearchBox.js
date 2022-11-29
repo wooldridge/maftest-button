@@ -46,6 +46,7 @@ const SearchBox = (props) => {
 
   const handleSelect = (e) => {
     setSelected(e);
+    props.handleSelect(getEntityVal(e));
     searchInputRef.current.focus();
   };
 

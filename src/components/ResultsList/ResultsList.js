@@ -40,7 +40,7 @@ const ResultsList = (props) => {
   const getResultNoEntity = (results, index) => {
     let titleValue = results.uri ? results.uri : "No record URI";
     return (
-        <div key={"result-" + index} className="result">
+        <div key={"result-" + index} className="result" style={{"display": "flex"}}>
             <div className="details">
             <div className="title no-entity"><Value id={results.uri}>{titleValue}</Value></div>
             <div className="title no-entity"><Value id={results.uri}>{titleValue}</Value></div>
@@ -67,7 +67,7 @@ const ResultsList = (props) => {
 
   const getResults = () => {
     // let results = searchContext.searchResults.result.map((results, index) => {
-    let results = _.isArray(props.data) && props.data.map((results, index) => {
+    let results = _.isArray(props.data.hits.hits) && props.data.hits.hits.map((results, index) => {
       // Get entity type via configured path (root relative if configured) or at default property "entityType"
       const entityType = props.config.entityType ? 
         (props.config.entityType.rootRelative ? getValByConfig(props.data, props.config.entityType) :
@@ -97,14 +97,14 @@ const ResultsList = (props) => {
         }
       }
       return (
-        <div key={"result-" + index} className="result">
+        <div key={"result-" + index} className="result" style={{"display": "flex"}}>
           <span className="entityIcon" data-testid={"entity-icon-" + index}><FontAwesomeIcon icon={iconElement} color={configEntityType.icon ? configEntityType.icon.color : defaultIcon.color} /></span>
           <div className="thumbnail">
             {configEntityType.thumbnail ?
               <Image data={results} config={configEntityType.thumbnail.config} />
               : null}
           </div>
-          <div className="details">
+          <div className="details" style={{"display": "flex", "flex-direction": "column", "alignItems": "flex-start"}}>
             {/* TODO onClick handleTitleClick removed */}
             <div className="title" onClick={e => handleTitleClick(idValue)}>
                 {titleValue}
@@ -121,15 +121,15 @@ const ResultsList = (props) => {
           </div>
           <div className="actions">
             {configEntityType.timestamp ?
-              <div className="timestamp">
+              <div className="timestamp" style={{"display": "flex"}}>
                 <DateTime config={configEntityType.timestamp} data={results} style={configEntityType.timestamp.style} />
               </div> : null}
             <div className="icons">
               {configEntityType.status ?
-                <div className="status">
+                <div className="status" style={{"display": "flex", width: "200px"}}>
                   <Value data={results} config={configEntityType.status} getFirst={true} />
                 </div> : null}
-              {configEntityType.resultActions.component ?
+              {(configEntityType.resultActions && configEntityType.resultActions.component) ?
                 React.createElement(
                   COMPONENTS[configEntityType.resultActions.component],
                   {config: configEntityType.resultActions.config, data: results}
@@ -148,11 +148,11 @@ const ResultsList = (props) => {
   // TODO removed Pagination below
   return (
     <div className="resultsList">
-      {_.isArray(props.data) && props.data.length > 0 ? (
+      {props.data.hits && _.isArray(props.data.hits.hits) && props.data.hits.hits.length > 0 ? (
         <div>
           {getResults()}
         </div>
-      ) : <div className="noResults">No results</div>
+      ) : <div className="noResults" style={{"display": "flex", padding: "10px 0"}}>No results</div>
       }
     </div>
   );

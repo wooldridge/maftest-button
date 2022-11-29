@@ -1,6 +1,6 @@
 {
   "name": "maftest-button",
-  "version": "1.0.6",
+  "version": "1.0.26",
   "description": "MarkLogic Application Framework Test",
   "main": "./dist/index.js",
   "scripts": {
